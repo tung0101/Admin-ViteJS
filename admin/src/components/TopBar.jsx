@@ -17,10 +17,9 @@ const TopBar = () => {
               placeholder="Search for..."
               aria-label="Search"
               aria-describedby="basic-addon2"
-              style={{height:"40px", margin:" 10px 0"}}
        
             />
-            <div className="input-group-append"  style={{height:"40px"}}>
+            <div className="input-group-append"  >
               <button className="btn btn-primary bg-primary" type="button">
                 <i className="fas fa-search fa-sm" />
               </button>
@@ -90,11 +89,11 @@ const TopBar = () => {
                 Douglas McGee
               </span>
               <img
-                // className="rounded-circle"
-                className=""
+                className="rounded-circle"
+              
                 src="https://i.pinimg.com/736x/df/ce/a7/dfcea7989195d3273c2bcb367fca0a83.jpg"
                 alt="avatar admin"
-                // style={{ width: "20px", height: "20px" }}
+                style={{ width: "40px", height: "40px" }}
               />
             </a>
           </li>

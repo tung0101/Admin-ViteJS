@@ -1,16 +1,7 @@
 
-import { Link, useNavigate} from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const SideBar = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    // Xóa trạng thái đăng nhập khi người dùng đăng xuất
-    localStorage.removeItem("isAuthenticated");
-
-    // Chuyển hướng đến trang đăng nhập
-    navigate("/login");
-  };
 
   return (
     <>
@@ -29,15 +20,15 @@ const SideBar = () => {
             to="/admin"
             className="sidebar-brand-text mx-3 text-decoration-none text-white"
           >
-            ElegenceBeauty
+            Admin
           </Link>
         </a>
-        <div className="nav-item active">
+        {/* <div className="nav-item active">
           <Link to="/admin" className="nav-link text-white">
             <i className="fa fa-home fs-6" />
             <span className="text-white  fs-6">Dashboard</span>
           </Link>
-        </div>
+        </div> */}
         <div className="nav-item">
           <Link
             className="nav-link collapsed "
@@ -176,12 +167,24 @@ const SideBar = () => {
             <span className="text-white fs-6">Bài viết</span>
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link collapsed"
+            to="/listblog"
+            data-toggle="collapse"
+            data-target="#collapsePages"
+            aria-expanded="true"
+            aria-controls="collapsePages"
+          >
+            <i className="fa fa-comment fs-6" aria-hidden="true"></i>
+            <span className="text-white fs-6">Phản hồi</span>
+          </Link>
+        </li>
        
         <li className="nav-item">
           <Link
             className="nav-link collapsed"
             to="/login"
-            onClick={handleLogout}
             data-toggle="collapse"
             data-target="#collapsePages"
             aria-expanded="true"
