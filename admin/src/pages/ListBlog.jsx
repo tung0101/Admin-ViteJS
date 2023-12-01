@@ -1,57 +1,75 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import moment from "moment";
 
 const ListBlog = () => {
-  const [categories, setCategories] = useState([]);
-  const [deletedItemId, setDeletedItemId] = useState(null);
+  const sampleData = [
+    {
+      id: 1,
+      Nameproduct: "Bài Viết 1",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 2,
+      Nameproduct: "Bài Viết 2",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+
+    {
+      id: 3,
+      Nameproduct: "Bài Viết 3",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 4,
+      Nameproduct: "Bài Viết 4",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+
+    {
+      id: 5,
+      Nameproduct: "Bài Viết 5",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 6,
+      Nameproduct: "Bài Viết 6",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+
+    {
+      id: 7,
+      Nameproduct: "Bài Viết 7",
+      post: "jajdlaklsakelakelakdakdfs;kd;ak;dl;aldl;akfkksd;akd;al",
+      imgproduct:
+        "https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+  ];
+  const [appointments, setAppointments] = useState(sampleData);
   const [searchValue, setSearchValue] = useState("");
-  useEffect(() => {
-    fetchData();
-  }, [deletedItemId]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/baiviet/");
-      console.log("Fetched data:", response.data);
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   };
 
-  const handleDelete = async (idBaiViet) => {
-    console.log("Deleting item with ID:", idBaiViet);
+  const filteredAppointments = appointments.filter((item) => {
+    const customerName = item.Nameproduct.toLowerCase();
 
-    try {
-      await axios.delete(`http://localhost:8000/baiviet/${idBaiViet}`);
-      setDeletedItemId(idBaiViet);
-    } catch (error) {
-      console.error("Error deleting data:", error);
-    }
-  };
-
-  const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.substring(0, maxLength) + "...";
-    }
-    return str;
-  };
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  const filteredCategories = categories.filter((service) => {
-    return (
-      service.tieuDe.toLowerCase().includes(searchValue.toLowerCase()) ||
-      service.noiDung.toLowerCase().includes(searchValue.toLowerCase())
-      // Thêm các trường khác nếu cần
-    );
+    return customerName.includes(searchValue.toLowerCase());
   });
-
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -65,7 +83,7 @@ const ListBlog = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{ paddingTop: "100px" }}>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
               <h1 className="h3 mb-0 text-gray-800">Bài Viết</h1>
               <form className="d-none d-sm-inline-block form-inline my-auto navbar-search">
@@ -90,71 +108,63 @@ const ListBlog = () => {
                 to="/addblog"
                 className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               >
-                <i className="fas fa-add fa-sm text-white-50" /> Thêm bài viết
+                <i className="fas fa-add fa-sm text-white-50" />
+                Thêm
               </Link>
             </div>
             <div className="row">
               <div className="col-xl-12 col-lg-4">
-                <div className="card shadow mb-2 text-justify">
+                <div className="card shadow mb-4">
                   <table className="table">
                     <thead>
-                      <tr>
-                        <th scope="col" className="text-dark text-center">Hình ảnh 1</th>
-                        <th scope="col" className="text-dark text-center">Hình ảnh 2</th>
-                        <th scope="col" className="text-dark text-center">Tiêu Đề</th>
-                        <th scope="col" className="text-dark text-center">Nội dung 1</th>
-                        {/* <th scope="col" className="text-dark text-center">Nội dung 2</th>
-                        <th scope="col" className="text-dark text-center">Nội dung 3</th> */}
-                        <th scope="col" className="text-dark text-center">Ngày Đăng</th>
-                        <th scope="col" className="text-dark text-center">Tác Giả</th>
-                        <th scope="col" className="text-dark text-center">Số lượt CMT</th>
-                        <th scope="col" className="text-dark text-center">Thao tác</th>
+                      <tr className="text-left h-2">
+                        <th scope="col" className="text-dark text-center">
+                          Mã Bài Viết
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Tên Bài Viết
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Hình Ảnh Bài Viết
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Nội Dung
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Thao Tác
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredCategories.map((item) => (
-                        <tr key={item.idBaiviet}>
-                          <td>
-                            <img alt="avt user" width={50} src={item.hinhAnh} />
-                          </td>
-                          <td>
-                            <img
-                              alt="avt user"
-                              width={50}
-                              src={item.hinhAnh2}
-                            />
-                          </td>
-                          <td>{truncateString(item.tieuDe, 50)}</td>
-                          <td>{truncateString(item.noiDung, 20)}</td>
-                          {/* <td>{truncateString(item.noiDung2, 20)}</td>
-                          <td>{truncateString(item.noiDung3, 20)}</td> */}
-                          <td>
-                            {" "}
-                            {moment(item.ngayDang).format(
-                              "DD/MM/YYYY HH:mm:ss"
-                            )}
-                          </td>
-                          <td>{item.nguoiDang}</td>
-                          <td>{item.soComment}</td>
-                          <td
-                            className="button d-flex align-items-center justify-content-between gap-2 "
-                            style={{ height: "100px" }}
-                          >
-                            <Link
-                              to={`/updateblog/${item.idBaiViet}`}
-                              className="btn btn-primary"
-                            >
-                              Sửa
-                            </Link>
-                            <button
-                              className="btn btn-danger"
-                              onClick={() => handleDelete(item.idBaiViet)}
-                            >
-                              Xóa
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {filteredAppointments.map((service) => {
+                        return (
+                          <tr key={service.id}>
+                            <td className="text-center">{service.id}</td>
+                            <td className="text-center">
+                              {service.Nameproduct}
+                            </td>
+                            <td className="text-center">
+                              {" "}
+                              <img
+                                width={40}
+                                height={40}
+                                src={service.imgproduct}
+                              />
+                            </td>
+                            <td className="text-center">{service.post}</td>
+
+                            <td className="d-flex align-items-center justify-content-between">
+                              <Link
+                                to={`/updateblog`}
+                                className="btn btn-primary"
+                              >
+                                Sửa
+                              </Link>
+                              <button className="btn btn-danger">Xóa</button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                   <div className="d-flex justify-content-end navigation">

@@ -1,50 +1,10 @@
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+
 
 
 const EditService = () => {
-  const navigate = useNavigate();
-  const { idDichVu } = useParams();
 
-  const [dichvuData, setBlogData] = useState({
-    tieuDe: "",
-    hinhAnh: "",
-    noiDung: "",
-  });
-
-  useEffect(() => {
-    fetchData();
-  }, [idDichVu]);
-  console.log("idDichVu:", idDichVu);
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/dichvu/${idDichVu}`
-      );
-
-      setBlogData({ ...response.data });
-    } catch (error) {
-      console.error("Lỗi khi lấy dữ liệu bài viết:", error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBlogData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .put(`http://localhost:8000/dichvu/${idDichVu}`, dichvuData)
-      .then(() => {
-        navigate("/listService");
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div id="wrapper">
@@ -59,18 +19,18 @@ const EditService = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{paddingTop:"100px" }}>
             <div className="d-sm-flex align-items-center justify-content-center mb-4">
               <h1 className="h3 mb-0 text-gray-800">Sửa Dịch Vụ</h1>
             </div>
-            <form className="edit-service-form" onSubmit={handleSubmit}>
+            <form className="edit-service-form" >
               <div className="form-group">
                 <label>Tên Dịch Vụ:</label>
                 <input
                   type="text"
+                  className="form-control"
                   name="tieuDe"
-                  value={dichvuData.tieuDe || ""}
-                  onChange={handleInputChange}
+              
                 />
               </div>
 
@@ -85,12 +45,12 @@ const EditService = () => {
                 </div> */}
 
               <div className="form-group">
-                <label>Mô Tả:</label>
-                <textarea
-                  name="noiDung"
-                  value={dichvuData.noiDung || ""}
-                  onChange={handleInputChange}
-                />
+                <label>Giá:</label>
+                <input
+                  type="text"
+                  name="hinhAnh"
+                  className="form-control"
+                />{" "}
               </div>
 
               <div className="form-group">
@@ -98,11 +58,11 @@ const EditService = () => {
                 <input
                   type="text"
                   name="hinhAnh"
-                  onChange={handleInputChange}
+                  className="form-control"
                 />{" "}
                 <br />
                 <br />
-                <img src={dichvuData.hinhAnh} alt="" width={200} height={200} />
+                <img alt="" width={200} height={200} />
               </div>
 
               {/* Add more form groups for other properties of the service */}

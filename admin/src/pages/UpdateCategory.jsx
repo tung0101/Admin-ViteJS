@@ -1,45 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
 
 const UpdateCategory = () => {
-  const navigate = useNavigate();
-  const { idLoaiSanPham } = useParams();
 
-  const [blogData, setBlogData] = useState({
-    tenLoai: "",
-  });
-
-  useEffect(() => {
-    fetchData();
-  }, [idLoaiSanPham]);
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8000/loaisanpham/${idLoaiSanPham}`
-      );
-      setBlogData({ ...response.data });
-    } catch (error) {
-      console.error("Lỗi khi lấy dữ liệu bài viết:", error);
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBlogData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .put(`http://localhost:8000/loaisanpham/${idLoaiSanPham}`, blogData)
-      .then(() => {
-        navigate("/category");
-      })
-      .catch((err) => console.log(err));
-  };
 
   return (
     <div id="wrapper">
@@ -54,12 +18,12 @@ const UpdateCategory = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{paddingTop:"100px" }}>
             <div className="d-sm-flex align-items-center justify-content-center mb-4">
               <h1 className="h3 mb-0 text-gray-800">SỬA DANH MỤC</h1>
             </div>
             <div className="col-xl-12 col-lg-4">
-              <form className="m-4" onSubmit={handleSubmit}>
+              <form className="m-4">
                 <div className="row mb-2">
                   <div className="col-4">
                     <div className="col">
@@ -73,14 +37,13 @@ const UpdateCategory = () => {
                         className="form-control"
                         id="floatingTextarea"
                         name="tenLoai"
-                        value={blogData.tenLoai}
-                        onChange={handleInputChange}
+                  
                         required
                       ></input>
                     </div>
                   </div>
                 </div>
-                <button type="submit" className="btn btn-primary mt-2">
+                <button type="submit" className="btn btn-primary mt-2 ml-2">
                   Sửa
                 </button>
               </form>

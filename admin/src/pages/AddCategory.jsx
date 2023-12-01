@@ -1,32 +1,7 @@
-import { useState } from "react";
-import axios from "axios";
+
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import { useNavigate } from "react-router-dom";
 const AddCategory = () => {
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    tenLoai: "",
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      console.log(formData);
-      await axios.post("http://localhost:8000/loaisanpham", formData);
-      navigate("/category");
-    } catch (error) {
-      console.error("Error adding blog:", error);
-    }
-  };
-
   return (
     <div id="wrapper">
     {/* Sidebar */}
@@ -46,7 +21,7 @@ const AddCategory = () => {
       </div>
 
       <div className="col-xl-12 col-lg-4">
-        <form className="m-4" onSubmit={handleSubmit}>
+        <form className="m-4">
           <div className="row mb-2">
             <div className="col-6">
               <label htmlFor="serviceTitle" className="form-label text-dark">
@@ -56,8 +31,6 @@ const AddCategory = () => {
                 className="form-control"
                 id="description"
                 name="tenLoai"
-                value={formData.tenLoai}
-                onChange={handleChange}
                 required
               />
             </div>

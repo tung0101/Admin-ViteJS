@@ -1,55 +1,62 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
 
 const ListService = () => {
-  const [categories, setCategories] = useState([]);
-  const [deletedItemId, setDeletedItemId] = useState(null);
+  const sampleData = [
+    {
+      id: 1,
+      Nameproduct:"Dịch vụ 1",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 2,
+      Nameproduct:"Dịch vụ 2",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 3,
+      Nameproduct:"Dịch vụ 3",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+
+     {
+      id: 4,
+      Nameproduct:"Dịch vụ 4",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+    {
+      id: 5,
+      Nameproduct:"Dịch vụ 5",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+
+    {
+      id: 6,
+      Nameproduct:"Dịch vụ 6",
+      price:"150",
+      imgproduct:"https://i.pinimg.com/564x/bc/28/74/bc287434967e31b2fb340cb6140155ba.jpg",
+    },
+  
+  ];
+  const [appointments, setAppointments] = useState(sampleData);
   const [searchValue, setSearchValue] = useState("");
-  useEffect(() => {
-    fetchData();
-  }, [deletedItemId]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/dichvu/");
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   };
 
-  const handleDelete = async (idDichVu) => {
-    console.log("Deleting item with ID:", idDichVu);
+  const filteredAppointments = appointments.filter((item) => {
+    const customerName = item.Nameproduct.toLowerCase();
 
-    try {
-      await axios.delete(`http://localhost:8000/dichvu/${idDichVu}`);
-      setDeletedItemId(idDichVu);
-    } catch (error) {
-      console.error("Error deleting data:", error);
-    }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  const filteredCategories = categories.filter((service) => {
-    return (
-      service.tieuDe.toLowerCase().includes(searchValue.toLowerCase()) ||
-      service.noiDung.toLowerCase().includes(searchValue.toLowerCase())
-      // Thêm các trường khác nếu cần
-    );
+    return customerName.includes(searchValue.toLowerCase());
   });
-
-  const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.substring(0, maxLength) + "...";
-    }
-    return str;
-  };
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -63,7 +70,7 @@ const ListService = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{ paddingTop:"100px"}}>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
               <h1 className="h3 mb-0 text-gray-800">Dịch Vụ</h1>
               <form className="d-none d-sm-inline-block form-inline my-auto navbar-search">
@@ -89,10 +96,9 @@ const ListService = () => {
                 className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
               >
                 <i className="fas fa-add fa-sm text-white-50" />
-                Thêm dịch vụ
+                Thêm
               </Link>
             </div>
-
             <div className="row">
               <div className="col-xl-12 col-lg-4">
                 <div className="card shadow mb-4">
@@ -101,41 +107,38 @@ const ListService = () => {
                       <tr className="text-left h-2">
                         <th scope="col" className="text-dark text-center">Mã Dịch Vụ</th>
                         <th scope="col" className="text-dark text-center">Tên Dịch Vụ</th>
-                        <th scope="col" className="text-dark text-center">Ảnh</th>
-                        {/* <th scope="col">Giá</th> */}
-                        <th scope="col" className="text-dark text-center">Mô Tả</th>
-                        <th scope="col" className="text-dark text-center">Thao tác</th>
+                        <th scope="col" className="text-dark text-center">Hình Ảnh Dịch Vụ</th>
+                        <th scope="col" className="text-dark text-center">Giá</th>
+                        <th scope="col" className="text-dark text-center">Thao Tác</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredCategories.map((service, index) => {
+                      {filteredAppointments.map((service) => {
                         return (
-                          <tr key={index}>
-                            <td className="text-left">{index + 1}</td>
-                            <td>{service.tieuDe}</td>
-                            <td>
+                          <tr key={service.id}>
+                            <td className="text-center">{service.id}</td>
+                            <td className="text-center">{service.Nameproduct}</td>
+                            <td className="text-center">
+                              {" "}
                               <img
-                                alt={service.tieuDe}
+                 
                                 width={40}
                                 height={40}
-                                src={service.hinhAnh}
+                                src={service.imgproduct}
                               />
                             </td>
-                            {/* <td>{formatCurrency(service.gia)}</td> */}
-                            <td className="text-justify col-xl-5">
-                              {truncateString(service.noiDung, 50)}
-                            </td>
+                            <td className="text-center">{service.price}</td>
+                          
 
                             <td className="d-flex align-items-center justify-content-between">
                               <Link
-                                to={`/editservice/${service.idDichVu}`}
+                                to={`/editservice`}
                                 className="btn btn-primary"
                               >
                                 Sửa
                               </Link>
                               <button
                                 className="btn btn-danger"
-                                onClick={() => handleDelete(service.idDichVu)}
                               >
                                 Xóa
                               </button>

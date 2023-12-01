@@ -1,32 +1,9 @@
-import { useState } from "react";
-import axios from "axios";
+
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import { useNavigate} from "react-router-dom";
+
 const AddService = () => {
-  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    hinhAnh: "",
-    tieuDe: "",
-    noiDung: "",
-  });
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      console.log(formData);
-      await axios.post("http://localhost:8000/dichvu", formData);
-      navigate("/listService");
-    } catch (error) {
-      console.error("Error adding blog:", error);
-    }
-  };
 
   return (
     <div id="wrapper">
@@ -47,7 +24,7 @@ const AddService = () => {
             </div>
 
             <div className="col-xl-12 col-lg-4">
-              <form className="m-4" onSubmit={handleSubmit}>
+              <form className="m-4" >
                 <div className="row mb-2">
                   <div className="col-6">
                     <label
@@ -61,8 +38,7 @@ const AddService = () => {
                       className="form-control"
                       id="serviceTitle"
                       name="tieuDe"
-                      value={formData.tieuDe}
-                      onChange={handleChange}
+                
                       required
                     />
                   </div>
@@ -88,26 +64,25 @@ const AddService = () => {
                   </div>
                 </div> */}
                 <div className="row mb-2">
-                  <div className="col">
+                  <div className="col-6">
                     <label
                       htmlFor="description"
                       className="form-label text-dark"
                     >
-                      Mô tả
+                    Giá
                     </label>
-                    <textarea
+                    <input
+                      type="text"
                       className="form-control"
-                      id="description"
-                      name="noiDung"
-                      value={formData.noiDung}
-                      onChange={handleChange}
-                      rows={5}
+                      id="serviceTitle"
+                      name="tieuDe"
+                
                       required
                     />
                   </div>
                 </div>
                 <div className="row mb-2">
-                  <div className="col">
+                  <div className="col-6">
                     <label
                       htmlFor="description"
                       className="form-label text-dark"
@@ -119,8 +94,7 @@ const AddService = () => {
                       type="text"
                       id="formFile"
                       name="hinhAnh"
-                      value={formData.hinhAnh}
-                      onChange={handleChange}
+             
                       required
                     />
                   </div>

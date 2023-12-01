@@ -12,9 +12,9 @@ const SideBar = () => {
       >
         {/* Sidebar - Brand */}
         <a href="#" className="sidebar-brand d-flex align-items-center justify-content-center">
-          <div className="sidebar-brand-icon rotate-n-15">
+          {/* <div className="sidebar-brand-icon rotate-n-15">
             <i className="fas fa-laugh-wink" />
-          </div>
+          </div> */}
 
           <Link
             to="/admin"
@@ -170,7 +170,7 @@ const SideBar = () => {
         <li className="nav-item">
           <Link
             className="nav-link collapsed"
-            to="/listblog"
+            to="/feedback"
             data-toggle="collapse"
             data-target="#collapsePages"
             aria-expanded="true"

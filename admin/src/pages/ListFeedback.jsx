@@ -1,30 +1,29 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
 
-const Category = () => {
+const ListFeedback = () => {
   const sampleData = [
     {
       id: 1,
-      Category: "Danh mục 1",
+      NameUser: "tôi không đặt lịch được",
     },
     {
       id: 2,
-      Category: "Danh mục 2",
+      NameUser: "nên có nhiều dịch vụ hơn",
     },
     {
       id: 3,
-      Category: "Danh mục 3",
+      NameUser: "bên mình có dịch nào hot không",
     },
     {
       id: 4,
-      Category: "Danh mục 4",
+      NameUser: "tôi có sản phẩm nào rẻ không ạ",
     },
     {
       id: 5,
-      Category: "Danh mục 5",
-    }
+      NameUser: "tôi thể mua hàng được",
+    },
   ];
   const [appointments, setAppointments] = useState(sampleData);
   const [searchValue, setSearchValue] = useState("");
@@ -34,7 +33,7 @@ const Category = () => {
   };
 
   const filteredAppointments = appointments.filter((item) => {
-    const customerName = item.Category.toLowerCase();
+    const customerName = item.NameUser.toLowerCase();
 
     return customerName.includes(searchValue.toLowerCase());
   });
@@ -53,7 +52,7 @@ const Category = () => {
           {/* Container */}
           <div className="container-fluid" style={{ paddingTop: "100px" }}>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
-              <h1 className="h3 mb-0 text-gray-800">Danh Mục</h1>
+              <h1 className="h3 mb-0 text-gray-800">Phản Hồi</h1>
               <form className="d-none d-sm-inline-block form-inline my-auto navbar-search">
                 <div className="input-group">
                   <input
@@ -72,15 +71,7 @@ const Category = () => {
                   />
                 </div>
               </form>
-              <Link
-                to="/addcategory"
-                className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-              >
-                <i className="fas fa-add fa-sm text-white-50" />
-                Thêm
-              </Link>
             </div>
-
             <div className="row">
               <div className="col-xl-12 col-lg-4">
                 <div className="card shadow mb-4">
@@ -88,35 +79,22 @@ const Category = () => {
                     <thead>
                       <tr className="text-left h-2">
                         <th scope="col" className="text-dark text-center">
-                          Mã Danh Mục
+                          Mã Bình Luận
                         </th>
                         <th scope="col" className="text-dark text-center">
-                          Danh Mục
-                        </th>
-                        <th scope="col" className="text-dark text-center">
-                          Thao Tác
+                          Nội Dung Phản Hồi
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredAppointments.map((item) => (
-                        <tr key={item.id}>
-                          <td scope="row" className="text-center">
-                            {item.id}
-                          </td>
-                          <td className="text-center">{item.Category}</td>
-
-                          <td className="d-flex align-items-center justify-content-center">
-                            <Link
-                              to={`/updatecategory`}
-                              className="btn btn-primary"
-                            >
-                              Sửa
-                            </Link>
-                            <button className="btn btn-danger">Xóa</button>
-                          </td>
-                        </tr>
-                      ))}
+                      {filteredAppointments.map((service) => {
+                        return (
+                          <tr key={service.id}>
+                            <td className="text-center">{service.id}</td>
+                            <td className="text-center">{service.NameUser}</td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                   <div className="d-flex justify-content-end navigation">
@@ -143,4 +121,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default ListFeedback;

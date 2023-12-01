@@ -1,56 +1,52 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
-const ListUser = () => {
-  const [categories, setCategories] = useState([]);
-  const [deletedItemId, setDeletedItemId] = useState(null);
+const ListService = () => {
+  const sampleData = [
+    {
+      id: 1,
+      NameUser: "User 1",
+      Email: "abc123@gmail.com",
+      status: "Đang Hoạt Động",
+    },
+    {
+      id: 2,
+      NameUser: "User 2",
+      Email: "abc123@gmail.com",
+      status: "Đang Hoạt Động",
+    },
+    {
+      id: 3,
+      NameUser: "User 3",
+      Email: "abc123@gmail.com",
+      status: "Đang Hoạt Động",
+    },
+    {
+      id: 4,
+      NameUser: "User 3",
+      Email: "abc123@gmail.com",
+      status: "Đang Hoạt Động",
+    },
+    {
+      id: 5,
+      NameUser: "User 5",
+      Email: "abc123@gmail.com",
+      status: "Đang Hoạt Động",
+    }
+  ];
+  const [appointments, setAppointments] = useState(sampleData);
   const [searchValue, setSearchValue] = useState("");
-  useEffect(() => {
-    fetchData();
-  }, [deletedItemId]);
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/user/");
-      const filteredUsers = response.data.filter((user) => user.role === 0);
-      setCategories(filteredUsers);
-      // setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   };
 
-  const handleDelete = async (idUser) => {
-    console.log("Deleting item with ID:", idUser);
+  const filteredAppointments = appointments.filter((item) => {
+    const customerName = item.NameUser.toLowerCase();
 
-    try {
-      await axios.delete(`http://localhost:8000/user/${idUser}`);
-      setDeletedItemId(idUser);
-    } catch (error) {
-      console.error("Error deleting data:", error);
-    }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  const filteredCategories = categories.filter((service) => {
-    return (
-      service.userName.toLowerCase().includes(searchValue.toLowerCase()) ||
-      service.email.toLowerCase().includes(searchValue.toLowerCase())
-      // Thêm các trường khác nếu cần
-    );
+    return customerName.includes(searchValue.toLowerCase());
   });
-
-  const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.substring(0, maxLength) + "...";
-    }
-    return str;
-  };
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -64,7 +60,7 @@ const ListUser = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{ paddingTop: "100px" }}>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
               <h1 className="h3 mb-0 text-gray-800">Người Dùng</h1>
               <form className="d-none d-sm-inline-block form-inline my-auto navbar-search">
@@ -85,76 +81,45 @@ const ListUser = () => {
                   />
                 </div>
               </form>
-              {/* <Link
-                  to="/adduser"
-                  className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                >
-                  <i className="fas fa-add fa-sm text-white-50" />
-                  Thêm
-                </Link> */}
             </div>
-
             <div className="row">
               <div className="col-xl-12 col-lg-4">
                 <div className="card shadow mb-4">
                   <table className="table">
                     <thead>
-                      <tr>
-                        <th className="text-dark text-center">Mã Người Dùng</th>
-                        <th className="text-dark text-center">UserName</th>
-                        {/* <th className="text-center">Password</th> */}
-                        <th className="text-dark text-center">Email</th>
-                        <th className="text-dark text-center">Điểm</th>
-                        <th className="text-dark text-center">Quyền</th>
-                        <th className="text-dark text-center">Chức năng</th>
-                        <th className="text-dark text-center">Thao tác</th>
+                      <tr className="text-left h-2">
+                        <th scope="col" className="text-dark text-center">
+                          Mã Người Dùng
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Tên Người Dùng
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Email
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                      Trạng Thái
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredCategories.map((service, index) => {
+                      {filteredAppointments.map((service) => {
                         return (
-                          <tr key={index}>
-                            <td className="text-center">{index + 1}</td>
-                            <td> {truncateString(service.userName, 50)}</td>
-                            {/* <td className="text-center">
-                                <span className="d-none d-md-inline">
-                                  {truncateString(service.password, 50)}
-                                </span>
-                              </td> */}
-                            <td className="text-center">
-                              {truncateString(service.email, 50)}
-                            </td>
-                            <td className="text-center">10</td>
-                            <td className="text-center">
-                              {service.role === 0
-                                ? "Người dùng"
-                                : "Quản trị viên"}
-                            </td>
-                            <td className="text-center">
-                              <select className="custom-select">
-                                <option value="" disabled selected hidden>
-                                  Chọn một
-                                </option>
-                                <option value="option1">Khóa tài khoản</option>
-                                <option value="option2">
-                                  Vô hiệu hóa tài khoản{" "}
-                                </option>
-                              </select>
-                            </td>
+                          <tr key={service.id}>
+                            <td className="text-center">{service.id}</td>
+                            <td className="text-center">{service.NameUser}</td>
 
-                            <td className="d-flex align-items-center justify-content-between">
-                              <Link
-                                to={`/updateuser/${service.idUser}`}
-                                className="btn btn-primary"
+                            <td className="text-center">{service.Email}</td>
+                            <td className="text-center">
+                              <select
+                                className="form-select"
+                                aria-label="Default select example"
                               >
-                                Sửa
-                              </Link>
-                              <button
-                                className="btn btn-danger"
-                                onClick={() => handleDelete(service.idUser)}
-                              >
-                                Xóa
-                              </button>
+                                <option selected="">{service.status}</option>
+                                <option value={1}>Tạm Khóa</option>
+                                <option value={2}>Đang Hoạt Động</option>
+                                <option value={3}>Đang Vô Hiệu Hóa</option>
+                              </select>
                             </td>
                           </tr>
                         );
@@ -185,4 +150,4 @@ const ListUser = () => {
   );
 };
 
-export default ListUser;
+export default ListService;

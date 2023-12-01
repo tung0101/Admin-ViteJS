@@ -1,54 +1,65 @@
-import  { useEffect, useState } from "react";
+import { useState } from "react";
 import TopBar from "../components/TopBar";
 import SideBar from "../components/SideBar";
-import axios from "axios";
-// import { Link } from "react-router-dom";
-const ListComment = () => {
-  const [categories, setCategories] = useState([]);
-  const [deletedItemId, setDeletedItemId] = useState(null);
+
+const ListService = () => {
+  const sampleData = [
+    {
+      id: 1,
+      NameUser: "User 1",
+      post: "Bài Viết 1",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+    {
+      id: 2,
+      NameUser: "User 2",
+      post: "Bài Viết 1",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+    {
+      id: 3,
+      NameUser: "User 3",
+      post: "Bài Viết 1",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+    {
+      id: 1,
+      NameUser: "User 1",
+      post: "Bài Viết 2",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+
+    {
+      id: 2,
+      NameUser: "User 2",
+      post: "Bài Viết 2",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+    {
+      id: 3,
+      NameUser: "User 3",
+      post: "Bài Viết 2",
+      posts: "Bài viết này hay quá",
+      status: "Hiển Thị",
+    },
+  ];
+  const [appointments, setAppointments] = useState(sampleData);
   const [searchValue, setSearchValue] = useState("");
-  useEffect(() => {
-    fetchData();
-  }, [deletedItemId]);
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/binhluan/");
-      setCategories(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
   };
 
-  const handleDelete = async (idBinhLuan) => {
-    console.log("Deleting item with ID:", idBinhLuan);
+  const filteredAppointments = appointments.filter((item) => {
+    const customerName = item.post.toLowerCase();
 
-    try {
-      await axios.delete(`http://localhost:8000/binhluan/${idBinhLuan}`);
-      setDeletedItemId(idBinhLuan);
-    } catch (error) {
-      console.error("Error deleting data:", error);
-    }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
-  };
-
-  const filteredCategories = categories.filter((service) => {
-    return (
-      service.tieuDe.toLowerCase().includes(searchValue.toLowerCase()) ||
-      service.noiDung.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    return customerName.includes(searchValue.toLowerCase());
   });
-
-  const truncateString = (str, maxLength) => {
-    if (str.length > maxLength) {
-      return str.substring(0, maxLength) + "...";
-    }
-    return str;
-  };
-
   return (
     <div id="wrapper">
       {/* Sidebar */}
@@ -62,7 +73,7 @@ const ListComment = () => {
           <TopBar></TopBar>
 
           {/* Container */}
-          <div className="container-fluid" style={{paddingTop:"100px"}}>
+          <div className="container-fluid" style={{ paddingTop: "100px" }}>
             <div className="d-sm-flex align-items-center justify-content-between mb-4">
               <h1 className="h3 mb-0 text-gray-800">Bình Luận</h1>
               <form className="d-none d-sm-inline-block form-inline my-auto navbar-search">
@@ -83,70 +94,48 @@ const ListComment = () => {
                   />
                 </div>
               </form>
-              {/* <Link
-                to="/addservice"
-                className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-              >
-                <i className="fas fa-add fa-sm text-white-50" />Thêm Bình Luận
-              </Link> */}
             </div>
-
             <div className="row">
               <div className="col-xl-12 col-lg-4">
                 <div className="card shadow mb-4">
                   <table className="table">
                     <thead>
-                      <tr className="text-center">
-                        <th scope="col" className="text-dark text-center">Tên Bài Viết</th>
-                        <th scope="col" className="text-dark text-center">Người Bình Luận</th>
-                        <th scope="col" className="text-dark text-center">Ảnh Người Bình Luận</th>
-                        <th scope="col" className="text-dark text-center">NoiDung</th>
-                        <th scope="col" className="text-dark text-center">Chức năng</th>
-                        <th scope="col" className="text-dark text-center">Thao tác</th>
+                      <tr className="text-left h-2">
+                        <th scope="col" className="text-dark text-center">
+                          Mã Bình Luận
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Tên Người Dùng Bình Luận
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Bài Viết
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Nội Dung
+                        </th>
+                        <th scope="col" className="text-dark text-center">
+                          Thao Tác
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredCategories.map((service, index) => {
+                      {filteredAppointments.map((service) => {
                         return (
-                          <tr key={index}>
-                            {/* <td className="text-left">{index + 1}</td> */}
-                            <td> {truncateString(service.tieuDe, 50)}</td>
-                            <td className="text-center">{service.userName}</td>
+                          <tr key={service.id}>
+                            <td className="text-center">{service.id}</td>
+                            <td className="text-center">{service.NameUser}</td>
+
+                            <td className="text-center">{service.post}</td>
+                            <td className="text-center">{service.posts}</td>
                             <td className="text-center">
-                              <img
-                                alt={service.anhNguoiBinhLuan}
-                                width={40}
-                                height={40}
-                                src={service.anhNguoiBinhLuan}
-                              />
-                            </td>
-                            {/* <td>{formatCurrency(service.gia)}</td> */}
-                            <td>{truncateString(service.noiDung, 50)}</td>
-                            <td className="text-center">
-                              <select className="custom-select">
-                                <option value="" disabled selected hidden>
-                                  Chọn một
-                                </option>
-                                <option value="option1">Ẩn</option>
-                                <option value="option2">Hiện</option>
+                              <select
+                                className="form-select"
+                                aria-label="Default select example"
+                              >
+                                <option selected="">{service.status}</option>
+                                <option value={1}>Ẩn</option>
+                                <option value={2}>Hiển Thị</option>
                               </select>
-                            </td>
-                            <td
-                              className="button d-flex align-items-center justify-content-center gap-2 "
-                              style={{ height: "100px" }}
-                            >
-                              {/* <Link
-                                to={`/editservice/${service.idBinhLuan}`}
-                                className="btn btn-primary"
-                              >
-                                Sửa
-                              </Link> */}
-                              <button
-                                className="btn btn-danger"
-                                onClick={() => handleDelete(service.idBinhLuan)}
-                              >
-                                Xóa
-                              </button>
                             </td>
                           </tr>
                         );
@@ -177,4 +166,4 @@ const ListComment = () => {
   );
 };
 
-export default ListComment;
+export default ListService;
